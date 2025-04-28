@@ -16,4 +16,10 @@ interface ContactInfoRepository
      * @throws ContactInfoNotCreatedException
      */
     public function create($data): ContactInfo;
+
+    /**
+     * @param int $id
+     * @throws ContactInfoNotCreatedException
+     */
+    public function deleteOfId(int $id);
 }

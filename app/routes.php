@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Application\Actions\ContactInfo\ListContactInfoAction;
 use App\Application\Actions\ContactInfo\CreateContactInfoAction;
+use App\Application\Actions\ContactInfo\DeleteContactInfoAction;
 use App\Application\Actions\Photo\ListGalleriesAction;
 use App\Application\Actions\Photo\ViewGalleryAction;
 use App\Application\Actions\Photo\ListPhotosAction;
@@ -56,5 +57,6 @@ return function (App $app) {
 	$app->group('/contact', function(Group $group) {
 		$group->get('', ListContactInfoAction::class);
 		$group->post('', CreateContactInfoAction::class);
+		$group->delete('/{id}', DeleteContactInfoAction::class);
 	});
 };

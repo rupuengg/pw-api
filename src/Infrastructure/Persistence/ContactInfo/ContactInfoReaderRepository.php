@@ -63,4 +63,17 @@ final class ContactInfoReaderRepository implements ContactInfoRepository
 		
 		return new ContactInfo($row['id'], $row['isRead'], $row['name'], $row['email'], $row['phone'], $row['query']);
     }
+
+    public function deleteOfId(int $id)
+    {
+        $query = $this->connection->delete()->from('contact_info')->where("id", "=", $id);
+
+        $row = $query->execute();
+
+        if(!$row) {
+            throw new DomainException(sprintf('Contact Info not found: %s', $id));
+        }
+		
+		return 'OK';
+    }
 }
