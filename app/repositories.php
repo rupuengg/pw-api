@@ -1,0 +1,23 @@
+<?php
+
+declare(strict_types=1);
+
+use App\Domain\ContactInfo\ContactInfoRepository;
+use App\Domain\Photo\PhotoRepository;
+use App\Domain\SiteConfig\SiteConfigRepository;
+use App\Domain\User\UserRepository;
+use App\Infrastructure\Persistence\ContactInfo\ContactInfoReaderRepository;
+use App\Infrastructure\Persistence\Photo\PhotoReaderRepository;
+use App\Infrastructure\Persistence\SiteConfig\SiteConfigReaderRepository;
+use App\Infrastructure\Persistence\User\UserReaderRepository;
+use DI\ContainerBuilder;
+
+return function (ContainerBuilder $containerBuilder) {
+    // Here we map our UserRepository interface to its in memory implementation
+    $containerBuilder->addDefinitions([
+        UserRepository::class => \DI\autowire(UserReaderRepository::class),
+        SiteConfigRepository::class => \DI\autowire(SiteConfigReaderRepository::class),
+        PhotoRepository::class => \DI\autowire(PhotoReaderRepository::class),
+        ContactInfoRepository::class => \DI\autowire(ContactInfoReaderRepository::class),
+    ]);
+};
