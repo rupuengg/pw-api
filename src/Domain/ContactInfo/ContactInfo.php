@@ -16,7 +16,7 @@ class ContactInfo implements JsonSerializable
   private $phone;
   private $query;
 
-  public function __construct($id, $isRead, $name, $email, $phone, $query)
+  public function __construct(?int $id, $isRead, $name, $email, $phone, $query)
   {
     $this->id = $id;
     $this->isRead = $isRead;

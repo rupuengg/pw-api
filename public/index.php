@@ -40,9 +40,6 @@ AppFactory::setContainer($container);
 $app = AppFactory::create();
 $callableResolver = $app->getCallableResolver();
 
-// Production only
-$app->addErrorMiddleware(false, true, true);
-
 // Register middleware
 $middleware = require __DIR__ . '/../app/middleware.php';
 $middleware($app);
@@ -58,35 +55,34 @@ $displayErrorDetails = $settings->get('displayErrorDetails');
 $logError = $settings->get('logError');
 $logErrorDetails = $settings->get('logErrorDetails');
 
-// Create Request object from globals
-$serverRequestCreator = ServerRequestCreatorFactory::create();
-$request = $serverRequestCreator->createServerRequestFromGlobals();
+// // Create Request object from globals
+// $serverRequestCreator = ServerRequestCreatorFactory::create();
+// $request = $serverRequestCreator->createServerRequestFromGlobals();
 
-// Create Error Handler
-$responseFactory = $app->getResponseFactory();
-$errorHandler = new HttpErrorHandler($callableResolver, $responseFactory);
+// // Create Error Handler
+// $responseFactory = $app->getResponseFactory();
+// $errorHandler = new HttpErrorHandler($callableResolver, $responseFactory);
 
-// Create Shutdown Handler
-$shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails);
-register_shutdown_function($shutdownHandler);
+// // Create Shutdown Handler
+// $shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails);
+// register_shutdown_function($shutdownHandler);
 
-// Add Routing Middleware
-$app->addRoutingMiddleware();
+// // Add Routing Middleware
+// $app->addRoutingMiddleware();
 
 // Set the base path to run the app in a subdirectory.
 // This path is used in urlFor().
 $app->add(new BasePathMiddleware($app));
 
-$app->addErrorMiddleware(true, true, true);
+// // Add Body Parsing Middleware
+// $app->addBodyParsingMiddleware();
 
-// Add Body Parsing Middleware
-$app->addBodyParsingMiddleware();
-
-// Add Error Middleware
-$errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, $logError, $logErrorDetails);
-$errorMiddleware->setDefaultErrorHandler($errorHandler);
+// // Add Error Middleware
+// $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, $logError, $logErrorDetails);
+// $errorMiddleware->setDefaultErrorHandler($errorHandler);
 
 // Run App & Emit Response
-$response = $app->handle($request);
-$responseEmitter = new ResponseEmitter();
-$responseEmitter->emit($response);
+// $response = $app->handle($request);
+// $responseEmitter = new ResponseEmitter();
+// $responseEmitter->emit($response);
+$app->run();

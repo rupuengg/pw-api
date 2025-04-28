@@ -1,5 +1,0 @@
-<IfModule mod_rewrite.c>
-   RewriteEngine on
-   RewriteRule ^$ https://panacheworld.in/api/ [L]
-   RewriteRule (^[^/]*$) https://panacheworld.in/api/$1 [L]
-</IfModule>
