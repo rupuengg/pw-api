@@ -1,16 +1,3 @@
-# Options All -Indexes
-
-# <Files .htaccess>
-# order allow,deny
-# deny from all
-# </Files>
-
-# <Directory /var/www/>
-#     Options Indexes FollowSymLinks
-#     AllowOverride All
-#     Require all granted
-# </Directory>
-
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteCond %{REQUEST_FILENAME} !-f

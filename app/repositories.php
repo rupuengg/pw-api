@@ -10,6 +10,8 @@ use App\Infrastructure\Persistence\ContactInfo\ContactInfoReaderRepository;
 use App\Infrastructure\Persistence\Photo\PhotoReaderRepository;
 use App\Infrastructure\Persistence\SiteConfig\SiteConfigReaderRepository;
 use App\Infrastructure\Persistence\User\UserReaderRepository;
+use App\Domain\JobSeeker\JobSeekerRepository;
+use App\Infrastructure\Persistence\JobSeeker\JobSeekerReaderRepository;
 use DI\ContainerBuilder;
 
 return function (ContainerBuilder $containerBuilder) {
@@ -19,5 +21,6 @@ return function (ContainerBuilder $containerBuilder) {
         SiteConfigRepository::class => \DI\autowire(SiteConfigReaderRepository::class),
         PhotoRepository::class => \DI\autowire(PhotoReaderRepository::class),
         ContactInfoRepository::class => \DI\autowire(ContactInfoReaderRepository::class),
+        JobSeekerRepository::class => \DI\autowire(JobSeekerReaderRepository::class),
     ]);
 };

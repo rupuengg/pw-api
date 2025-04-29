@@ -55,9 +55,9 @@ $displayErrorDetails = $settings->get('displayErrorDetails');
 $logError = $settings->get('logError');
 $logErrorDetails = $settings->get('logErrorDetails');
 
-// // Create Request object from globals
-// $serverRequestCreator = ServerRequestCreatorFactory::create();
-// $request = $serverRequestCreator->createServerRequestFromGlobals();
+// Create Request object from globals
+$serverRequestCreator = ServerRequestCreatorFactory::create();
+$request = $serverRequestCreator->createServerRequestFromGlobals();
 
 // // Create Error Handler
 // $responseFactory = $app->getResponseFactory();
@@ -75,14 +75,14 @@ $logErrorDetails = $settings->get('logErrorDetails');
 $app->add(new BasePathMiddleware($app));
 
 // // Add Body Parsing Middleware
-// $app->addBodyParsingMiddleware();
+ $app->addBodyParsingMiddleware();
 
 // // Add Error Middleware
 // $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, $logError, $logErrorDetails);
 // $errorMiddleware->setDefaultErrorHandler($errorHandler);
 
 // Run App & Emit Response
-// $response = $app->handle($request);
-// $responseEmitter = new ResponseEmitter();
-// $responseEmitter->emit($response);
-$app->run();
+$response = $app->handle($request);
+$responseEmitter = new ResponseEmitter();
+$responseEmitter->emit($response);
+//$app->run();
