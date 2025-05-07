@@ -6,6 +6,11 @@ use App\Application\Actions\ContactInfo\ListContactInfoAction;
 use App\Application\Actions\ContactInfo\CreateContactInfoAction;
 use App\Application\Actions\ContactInfo\DeleteContactInfoAction;
 use App\Application\Actions\JobSeeker\ListJobSeekerAction;
+use App\Application\Actions\Menu\CreateMenuAction;
+use App\Application\Actions\Menu\DeleteMenuAction;
+use App\Application\Actions\Menu\ListMenuAction;
+use App\Application\Actions\Menu\UpdateMenuAction;
+use App\Application\Actions\Menu\ViewMenuAction;
 use App\Application\Actions\Photo\ListGalleriesAction;
 use App\Application\Actions\Photo\ViewGalleryAction;
 use App\Application\Actions\Photo\ListPhotosAction;
@@ -66,5 +71,13 @@ return function (App $app) {
 //        $group->post('', CreateSiteConfigAction::class);
 //        $group->put('', UpdateSiteConfigAction::class);
 //        $group->delete('/{id}', DeleteSiteConfigAction::class);
+    });
+
+    $app->group('/menus', function (Group $group) {
+        $group->get('', ListMenuAction::class);
+        $group->get('/{id}', ViewMenuAction::class);
+        $group->post('', CreateMenuAction::class);
+        $group->put('', UpdateMenuAction::class);
+        $group->delete('/{id}', DeleteMenuAction::class);
     });
 };

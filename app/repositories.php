@@ -3,10 +3,12 @@
 declare(strict_types=1);
 
 use App\Domain\ContactInfo\ContactInfoRepository;
+use App\Domain\Menu\MenuRepository;
 use App\Domain\Photo\PhotoRepository;
 use App\Domain\SiteConfig\SiteConfigRepository;
 use App\Domain\User\UserRepository;
 use App\Infrastructure\Persistence\ContactInfo\ContactInfoReaderRepository;
+use App\Infrastructure\Persistence\Menu\MenuReaderRepository;
 use App\Infrastructure\Persistence\Photo\PhotoReaderRepository;
 use App\Infrastructure\Persistence\SiteConfig\SiteConfigReaderRepository;
 use App\Infrastructure\Persistence\User\UserReaderRepository;
@@ -21,6 +23,7 @@ return function (ContainerBuilder $containerBuilder) {
         SiteConfigRepository::class => \DI\autowire(SiteConfigReaderRepository::class),
         PhotoRepository::class => \DI\autowire(PhotoReaderRepository::class),
         ContactInfoRepository::class => \DI\autowire(ContactInfoReaderRepository::class),
+        MenuRepository::class => \DI\autowire(MenuReaderRepository::class),
         JobSeekerRepository::class => \DI\autowire(JobSeekerReaderRepository::class),
     ]);
 };

@@ -14,7 +14,7 @@ class DeleteContactInfoAction extends ContactInfoAction
     protected function action(): Response
     {
         $contactId = (int) $this->resolveArg('id');
-        $contact = $this->contactInfoRepository->deleteOfId($contactId);
+        $contact = $this->contactInfoRepository->deleteById($contactId);
 
         $this->logger->info("SEO all list was viewed.");
 

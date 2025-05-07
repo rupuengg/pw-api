@@ -2,15 +2,18 @@
 
 namespace App\Infrastructure\Persistence\ContactInfo;
 
-use DomainException;
-use Selective\Database\Connection;
 use App\Domain\ContactInfo\ContactInfo;
 use App\Domain\ContactInfo\ContactInfoRepository;
+use DomainException;
+use Selective\Database\Connection;
 
 final class ContactInfoReaderRepository implements ContactInfoRepository
 {
     private Connection $connection;
-	
+    private $tableName = "contact_info";
+    private $columns = ['id', 'isRead', 'name', 'email', 'phone', 'query'];
+    private string $orderBy = "id desc";
+
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
@@ -18,22 +21,22 @@ final class ContactInfoReaderRepository implements ContactInfoRepository
 
     public function findAll(): array
     {
-        $query = $this->connection->select()->from('contact_info');
+        $query = $this->connection->select()->from($this->tableName)->orderBy($this->orderBy);
 
-        $query->columns(['id', 'isRead', 'name', 'email', 'phone', 'query']);
+        $query->columns($this->columns);
 
         $rows = $query->execute()->fetchAll() ?: [];
-		
-		if(!is_array($rows)) {
+
+        if (!is_array($rows)) {
             throw new DomainException(sprintf('Contact Info not found'));
         }
-		
-		$contactInfos = array();
-		
-		for ($iCounter = 0; $iCounter < count($rows); $iCounter++) {
+
+        $contactInfos = [];
+
+        for ($iCounter = 0; $iCounter < count($rows); $iCounter++) {
             $row = $rows[$iCounter];
-			array_push($contactInfos, new ContactInfo($row['id'], $row['isRead'], $row['name'], $row['email'], $row['phone'], $row['query']));
-		}
+            array_push($contactInfos, $this->convertData($row));
+        }
 
         return $contactInfos;
     }
@@ -41,39 +44,46 @@ final class ContactInfoReaderRepository implements ContactInfoRepository
     public function create($d): ContactInfo
     {
         $d['id'] = null;
-        $query = $this->connection->insert()->into('contact_info')->set($d);
+        $query = $this->connection->insert()->into($this->tableName)->set($d);
 
         $row = $query->execute();
 
-		return $this->findContactInfoOfId($query->lastInsertId());
+        return $this->findContactInfoById($query->lastInsertId());
     }
 
-    private function findContactInfoOfId(int $id): ContactInfo
+    private function findContactInfoById(int $id): ContactInfo
     {
-        $query = $this->connection->select()->from('contact_info');
+        $query = $this->connection->select()->from($this->tableName);
 
-        $query->columns(['id', 'isRead', 'name', 'email', 'phone', 'query']);
+        $query->columns($this->columns);
         $query->where('id', '=', $id);
 
         $row = $query->execute()->fetch() ?: [];
 
-        if(!$row) {
+        if (!$row) {
             throw new DomainException(sprintf('Contact Info not found: %s', $id));
         }
-		
-		return new ContactInfo($row['id'], $row['isRead'], $row['name'], $row['email'], $row['phone'], $row['query']);
+
+        return $this->convertData($row);
     }
 
-    public function deleteOfId(int $id)
+    public function deleteById(int $id)
     {
-        $query = $this->connection->delete()->from('contact_info')->where("id", "=", $id);
+        $query = $this->connection->delete()->from($this->tableName)->where("id", "=", $id);
 
         $row = $query->execute();
 
-        if(!$row) {
+        if (!$row) {
             throw new DomainException(sprintf('Contact Info not found: %s', $id));
         }
-		
-		return 'OK';
+
+        return 'OK';
+    }
+
+
+
+    private function convertData($row): ContactInfo
+    {
+        return new ContactInfo($row['id'], $row['isRead'], $row['name'], $row['email'], $row['phone'], $row['query']);
     }
 }
