@@ -12,6 +12,7 @@ final class MenuReaderRepository implements MenuRepository
     private Connection $connection;
     private $tableName = "menus";
     private $columns = ['id', 'title', 'link', 'type', 'subMenuId', 'entrypoint'];
+    private string $orderBy = "id asc";
 
     public function __construct(Connection $connection)
     {
@@ -20,7 +21,7 @@ final class MenuReaderRepository implements MenuRepository
 
     public function findAll(): array
     {
-        $query = $this->connection->select()->from($this->tableName);
+        $query = $this->connection->select()->from($this->tableName)->orderBy($this->orderBy);
 
         $query->columns($this->columns);
 
