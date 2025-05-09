@@ -8,6 +8,8 @@ use App\Application\Actions\ContactInfo\DeleteContactInfoAction;
 use App\Application\Actions\JobSeeker\ListJobSeekerAction;
 use App\Application\Actions\Menu\CreateMenuAction;
 use App\Application\Actions\Menu\DeleteMenuAction;
+use App\Application\Actions\Menu\ListAdminMenuAction;
+use App\Application\Actions\Menu\ListMainMenuAction;
 use App\Application\Actions\Menu\ListMenuAction;
 use App\Application\Actions\Menu\UpdateMenuAction;
 use App\Application\Actions\Menu\ViewMenuAction;
@@ -80,4 +82,7 @@ return function (App $app) {
         $group->put('', UpdateMenuAction::class);
         $group->delete('/{id}', DeleteMenuAction::class);
     });
+
+    $app->get('/main_menu/{isShow}', ListMainMenuAction::class);
+    $app->get('/admin_menu', ListAdminMenuAction::class);
 };

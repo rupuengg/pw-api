@@ -11,7 +11,7 @@ final class MenuReaderRepository implements MenuRepository
 {
     private Connection $connection;
     private $tableName = "menus";
-    private $columns = ['id', 'title', 'link', 'type', 'subMenuId', 'entrypoint'];
+    private $columns = ['id', 'title', 'route', 'page', 'menuType', 'type', 'subMenuId', 'entrypoint'];
     private string $orderBy = "id asc";
 
     public function __construct(Connection $connection)
@@ -23,6 +23,32 @@ final class MenuReaderRepository implements MenuRepository
     {
         $query = $this->connection->select()->from($this->tableName)->orderBy($this->orderBy);
 
+        $query->columns($this->columns);
+
+        $rows = $query->execute()->fetchAll() ?: [];
+
+        if (!is_array($rows)) {
+            throw new DomainException(sprintf('Menu not found'));
+        }
+
+        $contactInfos = [];
+
+        for ($iCounter = 0; $iCounter < count($rows); $iCounter++) {
+            $row = $rows[$iCounter];
+            $contactInfos[] = $this->convertData($row);
+        }
+
+        return $contactInfos;
+    }
+
+    public function findAllByMenuType($menuType, $isShow = 1): array
+    {
+        $query = $this->connection->select()->from($this->tableName);
+        $query->where('menuType', '=', $menuType);
+        if ($isShow) {
+            $query->where('isShow', '=', $isShow);
+        }
+        $query->orderBy($this->orderBy);
         $query->columns($this->columns);
 
         $rows = $query->execute()->fetchAll() ?: [];
@@ -67,8 +93,6 @@ final class MenuReaderRepository implements MenuRepository
         return $this->findById($query->lastInsertId());
     }
 
-
-
     public function update($data): Menu
     {
         $id = $data['id'];
@@ -98,6 +122,6 @@ final class MenuReaderRepository implements MenuRepository
 
     private function convertData($row): Menu
     {
-        return new Menu($row['id'], $row['title'], $row['link'], $row['type'], $row['subMenus'], $row['entrypoint']);
+        return new Menu($row['id'], $row['title'], $row['route'], $row['page'], $row['menuType'], $row['type'], $row['subMenuId'], $row['entrypoint']);
     }
 }

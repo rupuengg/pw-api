@@ -12,6 +12,11 @@ interface MenuRepository
     public function findAll(): array;
 
     /**
+     * @return Menu[]
+     */
+    public function findAllByMenuType($menuType, $isShow): array;
+
+    /**
      * @param int $id
      * @return Menu
      * @throws MenuNotCreatedException
