@@ -20,4 +20,9 @@ interface PhotoRepository
      * @return Photo
      */
     public function findGallery(string $galleryId): Photo;
+
+    /**
+     * @return Photo[]
+     */
+    public function findGalleryPhotos(string $imageKitFolder, $isDone): array;
 }

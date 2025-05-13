@@ -2,9 +2,13 @@
 
 declare(strict_types=1);
 
+use App\Application\Actions\Gallery\ListGalleryAction;
+use App\Application\Actions\Gallery\ListGalleryAllPhotosAction;
+use App\Application\Actions\Gallery\ListGalleryPhotosOnlyDoneAction;
 use App\Application\Actions\ContactInfo\ListContactInfoAction;
 use App\Application\Actions\ContactInfo\CreateContactInfoAction;
 use App\Application\Actions\ContactInfo\DeleteContactInfoAction;
+use App\Application\Actions\Gallery\ListGalleryPhotosOnlyUnderConstructionAction;
 use App\Application\Actions\JobSeeker\ListJobSeekerAction;
 use App\Application\Actions\Menu\CreateMenuAction;
 use App\Application\Actions\Menu\DeleteMenuAction;
@@ -16,6 +20,7 @@ use App\Application\Actions\Menu\ViewMenuAction;
 use App\Application\Actions\Photo\ListGalleriesAction;
 use App\Application\Actions\Photo\ViewGalleryAction;
 use App\Application\Actions\Photo\ListPhotosAction;
+use App\Application\Actions\Photo\ViewGalleryPhotosAction;
 use App\Application\Actions\SiteConfig\ListSiteConfigAction;
 use App\Application\Actions\SiteConfig\ViewSiteConfigAction;
 use App\Application\Actions\SiteConfig\CreateSiteConfigAction;
@@ -44,13 +49,19 @@ return function (App $app) {
         $group->get('/{id}', ViewUserAction::class);
     });
 
-    $app->group('/photos', function (Group $group) {
+    $app->group('/photo', function (Group $group) {
         $group->get('/all', ListPhotosAction::class);
     });
 
-    $app->group('/galleries', function (Group $group) {
-        $group->get('', ListGalleriesAction::class);
-        $group->get('/{id}', ViewGalleryAction::class);
+    $app->group('/gallery', function (Group $group) {
+//        $group->get('', ListGalleriesAction::class);
+//        $group->get('/{id}', ViewGalleryAction::class);
+//        $group->get('/{id}/{isDone}', ViewGalleryPhotosAction::class);
+
+        $group->get('', ListGalleryAction::class);
+        $group->get('/{imageKitFolder}', ListGalleryAllPhotosAction::class);
+        $group->get('/{imageKitFolder}/completed', ListGalleryPhotosOnlyDoneAction::class);
+        $group->get('/{imageKitFolder}/under', ListGalleryPhotosOnlyUnderConstructionAction::class);
     });
 
     $app->group('/seo', function (Group $group) {

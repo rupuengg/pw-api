@@ -8,235 +8,242 @@ use JsonSerializable;
 
 class SiteConfig implements JsonSerializable
 {
-  // SEO
-  private ?int $id;
-  private $route;
-  private $title;
-  private $description;
-  private $keywords;
+    // SEO
+    private ?int $id;
+    private $route;
+    private $imageKitFolder;
+    private $title;
+    private $description;
+    private $keywords;
 
-  // OG Configuration
-  private $ogSiteName;
-  private $ogUrl;
-  private $ogTitle;
-  private $ogDescription;
-  private $ogType;
-  private $ogSeeAlso;
-  private $ogLocale;
-  private $ogLocaleAlternate1;
-  private $ogLocaleAlternate2;
-  private $ogUpdatedTime;
-  // private OGImage $ogImage;
+    // OG Configuration
+    private $ogSiteName;
+    private $ogUrl;
+    private $ogTitle;
+    private $ogDescription;
+    private $ogType;
+    private $ogSeeAlso;
+    private $ogLocale;
+    private $ogLocaleAlternate1;
+    private $ogLocaleAlternate2;
+    private $ogUpdatedTime;
 
-  // OG Image
-  private $ogImageType; 
-  private $ogImageWidth; 
-  private $ogImageHeight; 
-  private $ogImageUrl; 
-  private $ogImageSecureUrl; 
-  private $ogImageAlt;
+    // OG Image
+    private $ogImageType;
+    private $ogImageWidth;
+    private $ogImageHeight;
+    private $ogImageUrl;
+    private $ogImageSecureUrl;
+    private $ogImageAlt;
 
-  // OG Video
-  private $ogVideoType; 
-  private $ogVideoWidth; 
-  private $ogVideoHeight; 
-  private $ogVideoSecureUrl;
+    // OG Video
+    private $ogVideoType;
+    private $ogVideoWidth;
+    private $ogVideoHeight;
+    private $ogVideoSecureUrl;
 
-  public function __construct($id, $route, $title, $description, $keywords)
-  {
-    $this->id = $id;
-    $this->route = $route;
-    $this->title = $title;
-    $this->description = $description;
-    $this->keywords = $keywords;
-  }
+    public function __construct($id, $route, $imageKitFolder, $title, $description, $keywords)
+    {
+        $this->id = $id;
+        $this->route = $route;
+        $this->imageKitFolder = $imageKitFolder;
+        $this->title = $title;
+        $this->description = $description;
+        $this->keywords = $keywords;
+    }
 
-  public function setOgData($ogSiteName, $ogUrl, $ogTitle, $ogDescription, $ogType, $ogSeeAlso, $ogLocale, $ogLocaleAlternate1, $ogLocaleAlternate2, $ogUpdatedTime)
-  {
-    $this->ogSiteName = $ogSiteName;
-    $this->ogUrl = $ogUrl;
-    $this->ogTitle = $ogTitle;
-    $this->ogDescription = $ogDescription;
-    $this->ogType = $ogType;
-    $this->ogSeeAlso = $ogSeeAlso;
-    $this->ogLocale = $ogLocale;
-    $this->ogLocaleAlternate1 = $ogLocaleAlternate1;
-    $this->ogLocaleAlternate2 = $ogLocaleAlternate2;
-    $this->ogUpdatedTime = $ogUpdatedTime;
-  }
+    public function setOgData($ogSiteName, $ogUrl, $ogTitle, $ogDescription, $ogType, $ogSeeAlso, $ogLocale, $ogLocaleAlternate1, $ogLocaleAlternate2, $ogUpdatedTime)
+    {
+        $this->ogSiteName = $ogSiteName;
+        $this->ogUrl = $ogUrl;
+        $this->ogTitle = $ogTitle;
+        $this->ogDescription = $ogDescription;
+        $this->ogType = $ogType;
+        $this->ogSeeAlso = $ogSeeAlso;
+        $this->ogLocale = $ogLocale;
+        $this->ogLocaleAlternate1 = $ogLocaleAlternate1;
+        $this->ogLocaleAlternate2 = $ogLocaleAlternate2;
+        $this->ogUpdatedTime = $ogUpdatedTime;
+    }
 
-  public function setOgImageData($ogImageType, $ogImageWidth, $ogImageHeight, $ogImageUrl, $ogImageSecureUrl, $ogImageAlt)
-  {
-    $this->ogImageType = $ogImageType;
-    $this->ogImageWidth = $ogImageWidth;
-    $this->ogImageHeight = $ogImageHeight;
-    $this->ogImageUrl = $ogImageUrl;
-    $this->ogImageSecureUrl = $ogImageSecureUrl;
-    $this->ogImageAlt = $ogImageAlt;
-  }
+    public function setOgImageData($ogImageType, $ogImageWidth, $ogImageHeight, $ogImageUrl, $ogImageSecureUrl, $ogImageAlt)
+    {
+        $this->ogImageType = $ogImageType;
+        $this->ogImageWidth = $ogImageWidth;
+        $this->ogImageHeight = $ogImageHeight;
+        $this->ogImageUrl = $ogImageUrl;
+        $this->ogImageSecureUrl = $ogImageSecureUrl;
+        $this->ogImageAlt = $ogImageAlt;
+    }
 
-  public function setOgVideoData($ogVideoType, $ogVideoWidth, $ogVideoHeight, $ogVideoSecureUrl)
-  {
-    $this->ogVideoType = $ogVideoType;
-    $this->ogVideoWidth = $ogVideoWidth;
-    $this->ogVideoHeight = $ogVideoHeight;
-    $this->ogVideoSecureUrl = $ogVideoSecureUrl;
-  }
+    public function setOgVideoData($ogVideoType, $ogVideoWidth, $ogVideoHeight, $ogVideoSecureUrl)
+    {
+        $this->ogVideoType = $ogVideoType;
+        $this->ogVideoWidth = $ogVideoWidth;
+        $this->ogVideoHeight = $ogVideoHeight;
+        $this->ogVideoSecureUrl = $ogVideoSecureUrl;
+    }
 
-  public function getId()
-  {
-    return $this->id;
-  }
+    public function getId()
+    {
+        return $this->id;
+    }
 
-  public function getRoute()
-  {
-    return $this->route;
-  }
+    public function getRoute()
+    {
+        return $this->route;
+    }
 
-  public function getTitle()
-  {
-    return $this->title;
-  }
+    public function getImageKitFolder()
+    {
+        return $this->imageKitFolder;
+    }
 
-  public function getDescription()
-  {
-    return $this->description;
-  }
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-  public function getKeywords()
-  {
-    return $this->keywords;
-  }
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
-  public function getOgSiteName()
-  {
-    return $this->ogSiteName;
-  }
+    public function getKeywords()
+    {
+        return $this->keywords;
+    }
 
-  public function getOgUrl()
-  {
-    return $this->ogUrl;
-  }
+    public function getOgSiteName()
+    {
+        return $this->ogSiteName;
+    }
 
-  public function getOgTitle()
-  {
-    return $this->ogTitle;
-  }
+    public function getOgUrl()
+    {
+        return $this->ogUrl;
+    }
 
-  public function getOgDescription()
-  {
-    return $this->ogDescription;
-  }
+    public function getOgTitle()
+    {
+        return $this->ogTitle;
+    }
 
-  public function getOgSeeAlso()
-  {
-    return $this->ogSeeAlso;
-  }
+    public function getOgDescription()
+    {
+        return $this->ogDescription;
+    }
 
-  public function getOgLocale()
-  {
-    return $this->ogLocale;
-  }
+    public function getOgSeeAlso()
+    {
+        return $this->ogSeeAlso;
+    }
 
-  public function getOgLocaleAlternate1()
-  {
-    return $this->ogLocaleAlternate1;
-  }
+    public function getOgLocale()
+    {
+        return $this->ogLocale;
+    }
 
-  public function getOgLocaleAlternate2()
-  {
-    return $this->ogLocaleAlternate2;
-  }
+    public function getOgLocaleAlternate1()
+    {
+        return $this->ogLocaleAlternate1;
+    }
 
-  public function getOgType()
-  {
-    return $this->ogType;
-  }
+    public function getOgLocaleAlternate2()
+    {
+        return $this->ogLocaleAlternate2;
+    }
 
-  public function getOgUpdatedTime()
-  {
-    return $this->ogUpdatedTime;
-  }
+    public function getOgType()
+    {
+        return $this->ogType;
+    }
 
-  public function getOgImageType()
-  {
-    return $this->ogImageType;
-  }
+    public function getOgUpdatedTime()
+    {
+        return $this->ogUpdatedTime;
+    }
 
-  public function getOgImageWidth()
-  {
-    return $this->ogImageWidth;
-  }
+    public function getOgImageType()
+    {
+        return $this->ogImageType;
+    }
 
-  public function getOgImageHeight()
-  {
-    return $this->ogImageHeight;
-  }
+    public function getOgImageWidth()
+    {
+        return $this->ogImageWidth;
+    }
 
-  public function getOgImageUrl()
-  {
-    return $this->ogImageUrl;
-  }
+    public function getOgImageHeight()
+    {
+        return $this->ogImageHeight;
+    }
 
-  public function getOgImageSecureUrl()
-  {
-    return $this->ogImageSecureUrl;
-  }
+    public function getOgImageUrl()
+    {
+        return $this->ogImageUrl;
+    }
 
-  public function getOgImageAlt()
-  {
-    return $this->ogImageAlt;
-  }
+    public function getOgImageSecureUrl()
+    {
+        return $this->ogImageSecureUrl;
+    }
 
-  public function getOgVideoType()
-  {
-    return $this->ogVideoType;
-  }
+    public function getOgImageAlt()
+    {
+        return $this->ogImageAlt;
+    }
 
-  public function getOgVideoWidth()
-  {
-    return $this->ogVideoWidth;
-  }
+    public function getOgVideoType()
+    {
+        return $this->ogVideoType;
+    }
 
-  public function getOgVideoHeight()
-  {
-    return $this->ogVideoHeight;
-  }
+    public function getOgVideoWidth()
+    {
+        return $this->ogVideoWidth;
+    }
 
-  public function getOgVideoSecureUrl()
-  {
-    return $this->ogVideoSecureUrl;
-  }
+    public function getOgVideoHeight()
+    {
+        return $this->ogVideoHeight;
+    }
 
-  #[\ReturnTypeWillChange]
-  public function jsonSerialize(): array
-  {
-    return [
-      'id' => $this->id,
-      'route' => $this->route,
-      'title' => $this->title,
-      'description' => $this->description,
-      'keywords' => $this->keywords,
-      'ogSiteName' => $this->ogSiteName,
-      'ogUrl' => $this->ogUrl,
-      'ogTitle' => $this->ogTitle,
-      'ogDescription' => $this->ogDescription,
-      'ogType' => $this->ogType,
-      'ogSeeAlso' => $this->ogSeeAlso,
-      'ogLocale' => $this->ogLocale,
-      'ogLocaleAlternate1' => $this->ogLocaleAlternate1,
-      'ogLocaleAlternate2' => $this->ogLocaleAlternate2,
-      'ogUpdatedTime' => $this->ogUpdatedTime,
-      'ogImageType' => $this->ogImageType,
-      'ogImageWidth' => $this->ogImageWidth,
-      'ogImageHeight' => $this->ogImageHeight,
-      'ogImageUrl' => $this->ogImageUrl,
-      'ogImageSecureUrl' => $this->ogImageSecureUrl,
-      'ogImageAlt' => $this->ogImageAlt,
-      'ogVideoType' => $this->ogVideoType,
-      'ogVideoWidth' => $this->ogVideoWidth,
-      'ogVideoHeight' => $this->ogVideoHeight,
-      'ogVideoSecureUrl' => $this->ogVideoSecureUrl,
-    ];
-  }
+    public function getOgVideoSecureUrl()
+    {
+        return $this->ogVideoSecureUrl;
+    }
+
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize(): array
+    {
+        return [
+        'id' => $this->id,
+        'route' => $this->route,
+        'imageKitFolder' => $this->imageKitFolder,
+        'title' => $this->title,
+        'description' => $this->description,
+        'keywords' => $this->keywords,
+        'ogSiteName' => $this->ogSiteName,
+        'ogUrl' => $this->ogUrl,
+        'ogTitle' => $this->ogTitle,
+        'ogDescription' => $this->ogDescription,
+        'ogType' => $this->ogType,
+        'ogSeeAlso' => $this->ogSeeAlso,
+        'ogLocale' => $this->ogLocale,
+        'ogLocaleAlternate1' => $this->ogLocaleAlternate1,
+        'ogLocaleAlternate2' => $this->ogLocaleAlternate2,
+        'ogUpdatedTime' => $this->ogUpdatedTime,
+        'ogImageType' => $this->ogImageType,
+        'ogImageWidth' => $this->ogImageWidth,
+        'ogImageHeight' => $this->ogImageHeight,
+        'ogImageUrl' => $this->ogImageUrl,
+        'ogImageSecureUrl' => $this->ogImageSecureUrl,
+        'ogImageAlt' => $this->ogImageAlt,
+        'ogVideoType' => $this->ogVideoType,
+        'ogVideoWidth' => $this->ogVideoWidth,
+        'ogVideoHeight' => $this->ogVideoHeight,
+        'ogVideoSecureUrl' => $this->ogVideoSecureUrl,
+        ];
+    }
 }

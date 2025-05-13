@@ -37,14 +37,14 @@ return function (ContainerBuilder $containerBuilder) {
             $settings = $container->get(SettingsInterface::class);
             $db = $settings->get('db');
 
-            $driver		= $db['driver'];
-            $host		= $db['host'];
-            $dbname		= $db['database'];
-            $username	= $db['username'];
-            $password	= $db['password'];
-            $charset	= $db['charset'];
-            $flags		= $db['flags'];
-            $dsn		= "$driver:host=$host;dbname=$dbname;charset=utf8;collation=utf8_unicode_ci";
+            $driver     = $db['driver'];
+            $host       = $db['host'];
+            $dbname     = $db['database'];
+            $username   = $db['username'];
+            $password   = $db['password'];
+            $charset    = $db['charset'];
+            $flags      = $db['flags'];
+            $dsn        = "$driver:host=$host;dbname=$dbname;charset=utf8;collation=utf8_unicode_ci";
 
             $pdo = new PDO($dsn, $username, $password);
 

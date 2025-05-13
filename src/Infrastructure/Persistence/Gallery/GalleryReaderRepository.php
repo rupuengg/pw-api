@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Infrastructure\Persistence\Photo;
+namespace App\Infrastructure\Persistence\Gallery;
 
-use DomainException;
-use Selective\Database\Connection;
+use App\Domain\Gallery\Gallery;
+use App\Domain\Gallery\GalleryRepository;
 use App\Domain\Photo\Photo;
-use App\Domain\Photo\PhotoVersionInfo;
-use App\Domain\Photo\PhotoEmbeddedMetadata;
 use App\Domain\Photo\PhotoCustomMetadata;
-use App\Domain\Photo\PhotoRepository;
+use App\Domain\Photo\PhotoEmbeddedMetadata;
+use App\Domain\Photo\PhotoVersionInfo;
+use DomainException;
 use ImageKit\ImageKit;
-use ImageKit\Utils\Response;
 
-final class PhotoReaderRepository implements PhotoRepository
+final class GalleryReaderRepository implements GalleryRepository
 {
     private ImageKit $imageKit;
 
@@ -21,66 +20,70 @@ final class PhotoReaderRepository implements PhotoRepository
         $this->imageKit = $imageKit;
     }
 
-    public function findAllPhotos(): array
+    public function findAll(): array
     {
         $rows = $this->imageKit->listFiles([
-            "searchQuery" => '("customMetadata.isDone" = true)',
-//            "searchQuery" => '("customMetadata.isDone" = true)',
-//            "searchQuery" => '(path = "/043 - 110 - Aditya - Dhurav Apartment Delhi - Done/")'
-//            "type" => 'folder',
-//            "fielType" => 'all'
+            "type" => 'folder',
+            "fileType" => 'all'
         ]);
-
-        if (!$rows->result) {
-            throw new DomainException(sprintf('Photos not found'));
-        }
 
         return $this->convert($rows->result);
     }
 
-    public function findAllGalleries(): array
-    {
-        $photos = $this->findAllPhotos();
-
-        $galleries = array_filter($photos, function ($photo) {
-            return $photo->getCustomMetadata()->getCover() === true;
-        });
-
-        return array_values($galleries);
-    }
-
-    public function findGallery(string $galleryId): Photo
-    {
-        $photos = $this->findAllPhotos();
-
-        $result = array_filter($photos, function ($photo) use ($galleryId) {
-            return $photo->getCustomMetadata()->getGalleryId() === $galleryId;
-        });
-
-        $galleries = array_values($result);
-
-        if (count($galleries) === 0) {
-            throw new DomainException(sprintf('Gallery not found: %s', $galleryId));
-        }
-
-        return $galleries[0];
-    }
-
-    public function findGalleryPhotos(string $imageKitFolder, $isDone): array
+    public function findAllPhotos(string $imageKitFolder): array
     {
         $rows = $this->imageKit->listFiles([
-            "searchQuery" => '(path = "/' . $imageKitFolder . '/" and "customMetadata.isDone" = '.$isDone.')',
+            "searchQuery" => '(path = "/' . $imageKitFolder . '/")',
             "type" => 'file',
         ]);
 
-        if (!$rows->result) {
-            throw new DomainException(sprintf('Photos not found for %s', $imageKitFolder));
-        }
+        return $this->photoConvert($rows->result);
+    }
 
-        return $this->convert($rows->result);
+    public function findPhotosOnlyDone(string $imageKitFolder): array
+    {
+        $rows = $this->imageKit->listFiles([
+            "searchQuery" => '(path = "/' . $imageKitFolder . '/" and "customMetadata.isDone" = true)',
+            "type" => 'file',
+        ]);
+
+        return $this->photoConvert($rows->result);
+    }
+
+    public function findPhotosOnlyUnderConstruction(string $imageKitFolder): array
+    {
+        $rows = $this->imageKit->listFiles([
+            "searchQuery" => '(path = "/' . $imageKitFolder . '/" and "customMetadata.isDone" = false)',
+            "type" => 'file',
+        ]);
+
+        return $this->photoConvert($rows->result);
     }
 
     private function convert($result): array
+    {
+        $galleries = [];
+
+        for ($iCounter = 0; $iCounter < count($result); $iCounter++) {
+            $row = $result[$iCounter];
+
+            $cover = $this->getCustomMetadata($row->name);
+
+            $galleries[] = new Gallery(
+                $row->type,
+                $row->name,
+                $row->createdAt,
+                $row->updatedAt,
+                $row->folderId,
+                $row->folderPath,
+                $cover,
+            );
+        }
+
+        return $galleries;
+    }
+
+    private function photoConvert($result): array
     {
         $photos = [];
 
@@ -124,5 +127,19 @@ final class PhotoReaderRepository implements PhotoRepository
         }
 
         return $photos;
+    }
+
+    private function getCustomMetadata(string $imageKitFolder): Photo
+    {
+        $rows = $this->imageKit->listFiles([
+            "searchQuery" => '(path = "/' . $imageKitFolder . '/" and "customMetadata.cover" = true)',
+            "type" => 'file',
+        ]);
+
+        if (count($rows->result) == 0) {
+            throw new DomainException(sprintf('Cover photo not found'));
+        }
+
+        return $this->photoConvert($rows->result)[0];
     }
 }

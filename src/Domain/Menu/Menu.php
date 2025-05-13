@@ -14,10 +14,12 @@ class Menu implements JsonSerializable
     private $page;
     private $menuType;
     private $type;
+    private $isParent;
+    private $items;
     private $subMenuId;
     private $entrypoint;
 
-    public function __construct(?int $id, $title, $route, $page, $menuType, $type, $subMenuId, $entrypoint)
+    public function __construct(?int $id, $title, $route, $page, $menuType, $type, $isParent, $items, $subMenuId, $entrypoint)
     {
         $this->id = $id;
         $this->title = $title;
@@ -25,6 +27,8 @@ class Menu implements JsonSerializable
         $this->page = $page;
         $this->menuType = $menuType;
         $this->type = $type;
+        $this->isParent = $isParent;
+        $this->items = $items;
         $this->subMenuId = $subMenuId;
         $this->entrypoint = $entrypoint;
     }
@@ -59,6 +63,16 @@ class Menu implements JsonSerializable
         return $this->type;
     }
 
+    public function getIsParent()
+    {
+        return $this->isParent;
+    }
+
+    public function getItems()
+    {
+        return $this->items;
+    }
+
     public function getSubMenuId()
     {
         return $this->subMenuId;
@@ -79,6 +93,8 @@ class Menu implements JsonSerializable
         'page' => $this->page,
         'menuType' => $this->menuType,
         'type' => $this->type,
+        'isParent' => $this->isParent,
+        'items' => $this->items,
         'subMenuId' => $this->subMenuId,
         'entrypoint' => $this->entrypoint,
         ];
