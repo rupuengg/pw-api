@@ -27,6 +27,7 @@
     "imagekit/imagekit": "^4.0",
     "monolog/monolog": "^2.8",
     "php-di/php-di": "^6.4",
+    "phpmailer/phpmailer": "^6.10",
     "selective/basepath": "^2.1",
     "selective/database": "^3.2",
     "slim/psr7": "^1.5",

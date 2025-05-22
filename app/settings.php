@@ -47,6 +47,15 @@ return function (ContainerBuilder $containerBuilder) {
                     'publicKey'     => 'public_nCda166+V9Jj0qXrbcTIKYwYyWM=',
                     'privateKey'    => 'private_ZEHnfXujYXhGBcfak/VAGde66CI=',
                     'urlEndpoint'   => 'https://ik.imagekit.io/yz7i3lbbn/',
+                ],
+                'mailConfig' => [
+                    'Host' => 'mail.panacheworld.in',
+                    'SMTPAuth' => true,
+                    'Username' => 'info@panacheworld.in',
+                    'Password' => 'Nonunanu123!@#',
+                    'Port' => 465,
+                    'FromEmail' => 'info@panacheworld.in',
+                    'FromName' => 'PanacheWorld',
                 ]
             ]);
         }

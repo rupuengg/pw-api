@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Application\Actions\Blog\CreateBlogAction;
+use App\Application\Actions\Blog\DeleteBlogAction;
+use App\Application\Actions\Blog\ListBlogAction;
+use App\Application\Actions\Blog\UpdateBlogAction;
+use App\Application\Actions\Blog\ViewBlogAction;
 use App\Application\Actions\Gallery\ListGalleryAction;
 use App\Application\Actions\Gallery\ListGalleryAllPhotosAction;
 use App\Application\Actions\Gallery\ListGalleryPhotosOnlyDoneAction;
@@ -17,10 +22,13 @@ use App\Application\Actions\Menu\ListMainMenuAction;
 use App\Application\Actions\Menu\ListMenuAction;
 use App\Application\Actions\Menu\UpdateMenuAction;
 use App\Application\Actions\Menu\ViewMenuAction;
-use App\Application\Actions\Photo\ListGalleriesAction;
-use App\Application\Actions\Photo\ViewGalleryAction;
+use App\Application\Actions\MenuGroup\CreateMenuGroupAction;
+use App\Application\Actions\MenuGroup\DeleteMenuGroupAction;
+use App\Application\Actions\MenuGroup\ListMenuGroupAction;
+use App\Application\Actions\MenuGroup\UpdateMenuGroupAction;
+use App\Application\Actions\MenuGroup\ViewMenuGroupAction;
+use App\Application\Actions\MenuGroup\ViewMenuGroupByTypeAction;
 use App\Application\Actions\Photo\ListPhotosAction;
-use App\Application\Actions\Photo\ViewGalleryPhotosAction;
 use App\Application\Actions\SiteConfig\ListSiteConfigAction;
 use App\Application\Actions\SiteConfig\ViewSiteConfigAction;
 use App\Application\Actions\SiteConfig\CreateSiteConfigAction;
@@ -72,6 +80,14 @@ return function (App $app) {
         $group->delete('/{id}', DeleteSiteConfigAction::class);
     });
 
+    $app->group('/blog', function (Group $group) {
+        $group->get('', ListBlogAction::class);
+        $group->get('/{id}', ViewBlogAction::class);
+        $group->post('', CreateBlogAction::class);
+        $group->put('', UpdateBlogAction::class);
+        $group->delete('/{id}', DeleteBlogAction::class);
+    });
+
     $app->group('/contact', function (Group $group) {
         $group->get('', ListContactInfoAction::class);
         $group->post('', CreateContactInfoAction::class);
@@ -92,6 +108,15 @@ return function (App $app) {
         $group->post('', CreateMenuAction::class);
         $group->put('', UpdateMenuAction::class);
         $group->delete('/{id}', DeleteMenuAction::class);
+    });
+
+    $app->group('/menugroups', function (Group $group) {
+        $group->get('', ListMenuGroupAction::class);
+        $group->get('/{id}', ViewMenuGroupAction::class);
+        $group->get('/by/{type}', ViewMenuGroupByTypeAction::class);
+        $group->post('', CreateMenuGroupAction::class);
+        $group->put('', UpdateMenuGroupAction::class);
+        $group->delete('/{id}', DeleteMenuGroupAction::class);
     });
 
     $app->get('/main_menu/{isShow}', ListMainMenuAction::class);

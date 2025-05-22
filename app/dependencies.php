@@ -7,10 +7,11 @@ use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Selective\Database\Connection;
-// use ImageKit\Configuration;
 use ImageKit\ImageKit;
 
 return function (ContainerBuilder $containerBuilder) {
@@ -58,5 +59,45 @@ return function (ContainerBuilder $containerBuilder) {
 
             return new ImageKit($imageKit['publicKey'], $imageKit['privateKey'], $imageKit['urlEndpoint']);
         },
+        PHPMailer::class => function (ContainerInterface $container) {
+            $settings = $container->get(SettingsInterface::class);
+            $mailConfig = $settings->get('mailConfig');
+            $mail = new PHPMailer(true);
+
+//            try {
+                // Enable/Disable SMTP debugging
+                // 0 = off (for production use)
+                // 1 = client messages
+                // 2 = client and server messages
+                $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+
+                // Configure SMTP
+                $mail->isSMTP();
+                $mail->Host = $mailConfig['Host'];
+                $mail->SMTPAuth = $mailConfig['SMTPAuth'];
+                $mail->Username = $mailConfig['Username'];
+                $mail->Password = $mailConfig['Password'];
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                $mail->Port = $mailConfig['Port'];
+
+                // Set sender and recipient
+                $mail->setFrom($mailConfig['FromEmail'], $mailConfig['FromName']);
+//                $mail->addAddress('to@example.com', 'Recipient Name');
+
+                // Set email content
+//                $mail->Subject = 'Email Subject';
+//                $mail->Body = 'This is the email body.';
+
+                // Send the email
+//                $mail->send();
+//                return $response->write('Message sent!');
+
+                return $mail;
+
+//            } catch (Exception $e) {
+//                throw new \PHPUnit\Framework\Error($e);
+////                return $response->write('Message could not be sent. Mailer Error: ' . $mail->ErrorInfo);
+//            }
+        }
     ]);
 };

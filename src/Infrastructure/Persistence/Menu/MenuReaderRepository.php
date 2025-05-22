@@ -11,7 +11,18 @@ final class MenuReaderRepository implements MenuRepository
 {
     private Connection $connection;
     private $tableName = "menus";
-    private $columns = ['id', 'title', 'route', 'page', 'menuType', 'type', 'isParent', 'items', 'subMenuId', 'entrypoint'];
+    private $columns = [
+        'id',
+        'title',
+        'route',
+        'page',
+        'menuType',
+        'type',
+        'isParent',
+        'items',
+        'subMenuId',
+        'entrypoint'
+    ];
     private string $orderBy = "id asc";
 
     public function __construct(Connection $connection)
@@ -122,6 +133,17 @@ final class MenuReaderRepository implements MenuRepository
 
     private function convertData($row): Menu
     {
-        return new Menu($row['id'], $row['title'], $row['route'], $row['page'], $row['menuType'], $row['type'], $row['isParent'], $row['items'], $row['subMenuId'], $row['entrypoint']);
+        return new Menu(
+            $row['id'],
+            $row['title'],
+            $row['route'],
+            $row['page'],
+            $row['menuType'],
+            $row['type'],
+            $row['isParent'],
+            $row['items'],
+            $row['subMenuId'],
+            $row['entrypoint']
+        );
     }
 }

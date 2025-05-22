@@ -2,14 +2,18 @@
 
 declare(strict_types=1);
 
+use App\Domain\Blog\BlogRepository;
 use App\Domain\ContactInfo\ContactInfoRepository;
 use App\Domain\Gallery\GalleryRepository;
+use App\Domain\Menu\MenuGroupRepository;
 use App\Domain\Menu\MenuRepository;
 use App\Domain\Photo\PhotoRepository;
 use App\Domain\SiteConfig\SiteConfigRepository;
 use App\Domain\User\UserRepository;
+use App\Infrastructure\Persistence\Blog\BlogReaderRepository;
 use App\Infrastructure\Persistence\ContactInfo\ContactInfoReaderRepository;
 use App\Infrastructure\Persistence\Gallery\GalleryReaderRepository;
+use App\Infrastructure\Persistence\Menu\MenuGroupReaderRepository;
 use App\Infrastructure\Persistence\Menu\MenuReaderRepository;
 use App\Infrastructure\Persistence\Photo\PhotoReaderRepository;
 use App\Infrastructure\Persistence\SiteConfig\SiteConfigReaderRepository;
@@ -27,6 +31,8 @@ return function (ContainerBuilder $containerBuilder) {
         PhotoRepository::class => \DI\autowire(PhotoReaderRepository::class),
         ContactInfoRepository::class => \DI\autowire(ContactInfoReaderRepository::class),
         MenuRepository::class => \DI\autowire(MenuReaderRepository::class),
+        MenuGroupRepository::class => \DI\autowire(MenuGroupReaderRepository::class),
         JobSeekerRepository::class => \DI\autowire(JobSeekerReaderRepository::class),
+        BlogRepository::class => \DI\autowire(BlogReaderRepository::class),
     ]);
 };
