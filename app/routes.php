@@ -28,14 +28,17 @@ use App\Application\Actions\MenuGroup\ListMenuGroupAction;
 use App\Application\Actions\MenuGroup\UpdateMenuGroupAction;
 use App\Application\Actions\MenuGroup\ViewMenuGroupAction;
 use App\Application\Actions\MenuGroup\ViewMenuGroupByTypeAction;
-use App\Application\Actions\Photo\ListPhotosAction;
 use App\Application\Actions\SiteConfig\ListSiteConfigAction;
 use App\Application\Actions\SiteConfig\ViewSiteConfigAction;
 use App\Application\Actions\SiteConfig\CreateSiteConfigAction;
 use App\Application\Actions\SiteConfig\UpdateSiteConfigAction;
 use App\Application\Actions\SiteConfig\DeleteSiteConfigAction;
 use App\Application\Actions\User\ListUsersAction;
+use App\Application\Actions\User\LoginUserAction;
+use App\Application\Actions\User\LogoutUserAction;
+use App\Application\Actions\User\ProfileUserAction;
 use App\Application\Actions\User\ViewUserAction;
+use App\Application\Middleware\AuthMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -47,19 +50,9 @@ return function (App $app) {
         return $response;
     });
 
-    $app->get('/', function (Request $request, Response $response) {
-        $response->getBody()->write('Hello world!');
-        return $response;
-    });
-
-    $app->group('/users', function (Group $group) {
-        $group->get('', ListUsersAction::class);
-        $group->get('/{id}', ViewUserAction::class);
-    });
-
-    $app->group('/photo', function (Group $group) {
-        $group->get('/all', ListPhotosAction::class);
-    });
+//    $app->group('/photo', function (Group $group) {
+//        $group->get('/all', ListPhotosAction::class);
+//    });
 
     $app->group('/gallery', function (Group $group) {
 //        $group->get('', ListGalleriesAction::class);
@@ -78,7 +71,7 @@ return function (App $app) {
         $group->post('', CreateSiteConfigAction::class);
         $group->put('', UpdateSiteConfigAction::class);
         $group->delete('/{id}', DeleteSiteConfigAction::class);
-    });
+    })->add(AuthMiddleware::class);
 
     $app->group('/blog', function (Group $group) {
         $group->get('', ListBlogAction::class);
@@ -86,13 +79,13 @@ return function (App $app) {
         $group->post('', CreateBlogAction::class);
         $group->put('', UpdateBlogAction::class);
         $group->delete('/{id}', DeleteBlogAction::class);
-    });
+    })->add(AuthMiddleware::class);
 
     $app->group('/contact', function (Group $group) {
         $group->get('', ListContactInfoAction::class);
         $group->post('', CreateContactInfoAction::class);
         $group->delete('/{id}', DeleteContactInfoAction::class);
-    });
+    })->add(AuthMiddleware::class);
 
     $app->group('/job-seeker', function (Group $group) {
         $group->get('', ListJobSeekerAction::class);
@@ -100,7 +93,7 @@ return function (App $app) {
 //        $group->post('', CreateSiteConfigAction::class);
 //        $group->put('', UpdateSiteConfigAction::class);
 //        $group->delete('/{id}', DeleteSiteConfigAction::class);
-    });
+    })->add(AuthMiddleware::class);
 
     $app->group('/menus', function (Group $group) {
         $group->get('', ListMenuAction::class);
@@ -108,17 +101,28 @@ return function (App $app) {
         $group->post('', CreateMenuAction::class);
         $group->put('', UpdateMenuAction::class);
         $group->delete('/{id}', DeleteMenuAction::class);
-    });
+    })->add(AuthMiddleware::class);
 
     $app->group('/menugroups', function (Group $group) {
         $group->get('', ListMenuGroupAction::class);
         $group->get('/{id}', ViewMenuGroupAction::class);
-        $group->get('/by/{type}', ViewMenuGroupByTypeAction::class);
         $group->post('', CreateMenuGroupAction::class);
         $group->put('', UpdateMenuGroupAction::class);
         $group->delete('/{id}', DeleteMenuGroupAction::class);
+    })->add(AuthMiddleware::class);
+
+    $app->group('/users', function (Group $group) {
+        $group->get('', ListUsersAction::class);
+        $group->get('/{id}', ViewUserAction::class);
+    })->add(AuthMiddleware::class);
+
+    $app->group('/auth', function (Group $group) {
+        $group->post('/login', LoginUserAction::class);
+        $group->get('/profile', ProfileUserAction::class)->add(AuthMiddleware::class);
+        $group->delete('/logout', LogoutUserAction::class)->add(AuthMiddleware::class);
     });
 
+    $app->get('/menugroups/by/{type}', ViewMenuGroupByTypeAction::class);
     $app->get('/main_menu/{isShow}', ListMainMenuAction::class);
     $app->get('/admin_menu', ListAdminMenuAction::class);
 };

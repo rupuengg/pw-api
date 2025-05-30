@@ -24,6 +24,7 @@
   "require": {
     "php": "^7.4 || ^8.0",
     "ext-json": "*",
+    "firebase/php-jwt": "^5.5",
     "imagekit/imagekit": "^4.0",
     "monolog/monolog": "^2.8",
     "php-di/php-di": "^6.4",
@@ -31,7 +32,8 @@
     "selective/basepath": "^2.1",
     "selective/database": "^3.2",
     "slim/psr7": "^1.5",
-    "slim/slim": "^4.10"
+    "slim/slim": "^4.10",
+    "tuupola/slim-jwt-auth": "^3.8"
   },
   "require-dev": {
     "jangregor/phpstan-prophecy": "^1.0.0",

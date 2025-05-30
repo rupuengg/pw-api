@@ -17,4 +17,21 @@ interface UserRepository
      * @throws UserNotFoundException
      */
     public function findUserOfId(int $id): User;
+
+    /**
+     * @return User
+     * @throws UserNotFoundException
+     */
+    public function profile($user): User;
+
+    /**
+     * @return User
+     * @throws UserNotFoundException
+     */
+    public function login($data);
+
+    /**
+     * @throws UserNotFoundException
+     */
+    public function logout();
 }

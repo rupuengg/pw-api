@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Application\Handlers\HttpErrorHandler;
-use App\Application\Handlers\ShutdownHandler;
 use App\Application\ResponseEmitter\ResponseEmitter;
 use App\Application\Settings\SettingsInterface;
 use DI\ContainerBuilder;
@@ -16,9 +14,9 @@ require __DIR__ . '/../vendor/autoload.php';
 // Instantiate PHP-DI ContainerBuilder
 $containerBuilder = new ContainerBuilder();
 
-if (false) { // Should be set to true in production
-    $containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
-}
+//if (false) { // Should be set to true in production
+//    $containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
+//}
 
 // Set up settings
 $settings = require __DIR__ . '/../app/settings.php';
@@ -68,14 +66,14 @@ $request = $serverRequestCreator->createServerRequestFromGlobals();
 // register_shutdown_function($shutdownHandler);
 
 // // Add Routing Middleware
-// $app->addRoutingMiddleware();
+//$app->addRoutingMiddleware();
 
 // Set the base path to run the app in a subdirectory.
 // This path is used in urlFor().
 $app->add(new BasePathMiddleware($app));
 
 // // Add Body Parsing Middleware
- $app->addBodyParsingMiddleware();
+$app->addBodyParsingMiddleware();
 
 // // Add Error Middleware
 // $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, $logError, $logErrorDetails);

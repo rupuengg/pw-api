@@ -10,12 +10,17 @@ use Monolog\Processor\UidProcessor;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Selective\Database\Connection;
 use ImageKit\ImageKit;
+use Slim\Psr7\Factory\ResponseFactory;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
+        ResponseFactoryInterface::class => function (ContainerInterface $container) {
+            return $container->get(ResponseFactory::class);
+        },
         LoggerInterface::class => function (ContainerInterface $c) {
             $settings = $c->get(SettingsInterface::class);
 
