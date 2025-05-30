@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Persistence\User;
 
-use App\Domain\Menu\Menu;
+use App\Domain\User\UserNotFoundException;
 use DomainException;
 use Firebase\JWT\JWT;
 use Selective\Database\Connection;
@@ -49,6 +49,50 @@ final class UserReaderRepository implements UserRepository
         }
 
         return $this->convertData($row);
+    }
+
+    /**
+     * @throws UserNotFoundException
+     */
+    public function create($d): User
+    {
+        $d['id'] = null;
+        $query = $this->connection->insert()->into($this->tableName)->set($d);
+        $row = $query->execute();
+
+        if (!$row) {
+            throw new DomainException(sprintf('User not found'));
+        }
+
+        return $this->findUserOfId($query->lastInsertId());
+    }
+
+    /**
+     * @throws UserNotFoundException
+     */
+    public function update($d): User
+    {
+        $id = $d['id'];
+        $query = $this->connection->update()->table($this->tableName)->set($d)->where("id", "=", $d['id']);
+        $row = $query->execute();
+
+        if (!$row) {
+            throw new DomainException(sprintf('User not found: %s', $id));
+        }
+
+        return $this->findUserOfId($id);
+    }
+
+    public function deleteById(int $id)
+    {
+        $query = $this->connection->delete()->from($this->tableName)->where("id", "=", $id);
+        $row = $query->execute();
+
+        if (!$row) {
+            throw new DomainException(sprintf('User not found: %s', $id));
+        }
+
+        return 'OK';
     }
 
     public function profile($user): User

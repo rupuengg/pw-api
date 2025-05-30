@@ -33,10 +33,13 @@ use App\Application\Actions\SiteConfig\ViewSiteConfigAction;
 use App\Application\Actions\SiteConfig\CreateSiteConfigAction;
 use App\Application\Actions\SiteConfig\UpdateSiteConfigAction;
 use App\Application\Actions\SiteConfig\DeleteSiteConfigAction;
+use App\Application\Actions\User\CreateUserAction;
+use App\Application\Actions\User\DeleteUserAction;
 use App\Application\Actions\User\ListUsersAction;
 use App\Application\Actions\User\LoginUserAction;
 use App\Application\Actions\User\LogoutUserAction;
 use App\Application\Actions\User\ProfileUserAction;
+use App\Application\Actions\User\UpdateUserAction;
 use App\Application\Actions\User\ViewUserAction;
 use App\Application\Middleware\AuthMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -114,6 +117,9 @@ return function (App $app) {
     $app->group('/users', function (Group $group) {
         $group->get('', ListUsersAction::class);
         $group->get('/{id}', ViewUserAction::class);
+        $group->post('', CreateUserAction::class);
+        $group->put('', UpdateUserAction::class);
+        $group->delete('/{id}', DeleteUserAction::class);
     })->add(AuthMiddleware::class);
 
     $app->group('/auth', function (Group $group) {
@@ -125,4 +131,6 @@ return function (App $app) {
     $app->get('/menugroups/by/{type}', ViewMenuGroupByTypeAction::class);
     $app->get('/main_menu/{isShow}', ListMainMenuAction::class);
     $app->get('/admin_menu', ListAdminMenuAction::class);
+    $app->get('/blog_list', ListBlogAction::class);
+    $app->get('/blog_list/:id', ViewBlogAction::class);
 };

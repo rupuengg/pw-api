@@ -22,6 +22,24 @@ interface UserRepository
      * @return User
      * @throws UserNotFoundException
      */
+    public function create($data): User;
+
+    /**
+     * @return User
+     * @throws UserNotFoundException
+     */
+    public function update($data): User;
+
+    /**
+     * @param int $id
+     * @throws UserNotFoundException
+     */
+    public function deleteById(int $id);
+
+    /**
+     * @return User
+     * @throws UserNotFoundException
+     */
     public function profile($user): User;
 
     /**
