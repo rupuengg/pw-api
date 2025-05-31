@@ -2,6 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Application\Actions\BasicConfig\CreateBasicConfigAction;
+use App\Application\Actions\BasicConfig\DeleteBasicConfigAction;
+use App\Application\Actions\BasicConfig\ListBasicConfigAction;
+use App\Application\Actions\BasicConfig\UpdateBasicConfigAction;
+use App\Application\Actions\BasicConfig\ViewBasicConfigAction;
+use App\Application\Actions\BasicConfig\ViewByKeyBasicConfigAction;
 use App\Application\Actions\Blog\CreateBlogAction;
 use App\Application\Actions\Blog\DeleteBlogAction;
 use App\Application\Actions\Blog\ListBlogAction;
@@ -122,6 +128,14 @@ return function (App $app) {
         $group->delete('/{id}', DeleteUserAction::class);
     })->add(AuthMiddleware::class);
 
+    $app->group('/basic_config', function (Group $group) {
+        $group->get('', ListBasicConfigAction::class);
+        $group->get('/{id}', ViewBasicConfigAction::class);
+        $group->post('', CreateBasicConfigAction::class);
+        $group->put('', UpdateBasicConfigAction::class);
+        $group->delete('/{id}', DeleteBasicConfigAction::class);
+    })->add(AuthMiddleware::class);
+
     $app->group('/auth', function (Group $group) {
         $group->post('/login', LoginUserAction::class);
         $group->get('/profile', ProfileUserAction::class)->add(AuthMiddleware::class);
@@ -133,4 +147,5 @@ return function (App $app) {
     $app->get('/admin_menu', ListAdminMenuAction::class);
     $app->get('/blog_list', ListBlogAction::class);
     $app->get('/blog_list/:id', ViewBlogAction::class);
+    $app->get('/basic_config/by/{key}', ViewByKeyBasicConfigAction::class);
 };
