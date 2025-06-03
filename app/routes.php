@@ -39,6 +39,11 @@ use App\Application\Actions\SiteConfig\ViewSiteConfigAction;
 use App\Application\Actions\SiteConfig\CreateSiteConfigAction;
 use App\Application\Actions\SiteConfig\UpdateSiteConfigAction;
 use App\Application\Actions\SiteConfig\DeleteSiteConfigAction;
+use App\Application\Actions\Project\ListProjectAction;
+use App\Application\Actions\Project\ViewProjectAction;
+use App\Application\Actions\Project\CreateProjectAction;
+use App\Application\Actions\Project\UpdateProjectAction;
+use App\Application\Actions\Project\DeleteProjectAction;
 use App\Application\Actions\User\CreateUserAction;
 use App\Application\Actions\User\DeleteUserAction;
 use App\Application\Actions\User\ListUsersAction;
@@ -134,6 +139,14 @@ return function (App $app) {
         $group->post('', CreateBasicConfigAction::class);
         $group->put('', UpdateBasicConfigAction::class);
         $group->delete('/{id}', DeleteBasicConfigAction::class);
+    })->add(AuthMiddleware::class);
+
+    $app->group('/project', function (Group $group) {
+        $group->get('', ListProjectAction::class);
+        $group->get('/{id}', ViewProjectAction::class);
+        $group->post('', CreateProjectAction::class);
+        $group->put('', UpdateProjectAction::class);
+        $group->delete('/{id}', DeleteProjectAction::class);
     })->add(AuthMiddleware::class);
 
     $app->group('/auth', function (Group $group) {
