@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Project;
 
+use App\Domain\Address\Address;
 use JsonSerializable;
 
 class Project implements JsonSerializable
@@ -14,8 +15,9 @@ class Project implements JsonSerializable
     private $startDate;
     private $endDate;
     private $imageKitGalleryName;
+    private ?Address $address;
 
-    public function __construct($id, $title, $addressId, $startDate, $endDate, $imageKitGalleryName)
+    public function __construct($id, $title, $addressId, $startDate, $endDate, $imageKitGalleryName, ?Address $address)
     {
         $this->id = $id;
         $this->title = $title;
@@ -23,6 +25,7 @@ class Project implements JsonSerializable
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->imageKitGalleryName = $imageKitGalleryName;
+        $this->address = $address;
     }
 
     public function getId()
@@ -55,6 +58,11 @@ class Project implements JsonSerializable
         return $this->imageKitGalleryName;
     }
 
+    public function getAddress(): Address
+    {
+        return $this->address;
+    }
+
     #[\ReturnTypeWillChange]
     public function jsonSerialize(): array
     {
@@ -65,6 +73,7 @@ class Project implements JsonSerializable
         'startDate' => $this->startDate,
         'endDate' => $this->endDate,
         'imageKitGalleryName' => $this->imageKitGalleryName,
+        'address' => $this->address,
         ];
     }
 }

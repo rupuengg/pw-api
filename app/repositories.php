@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Domain\Address\AddressRepository;
 use App\Domain\BasicConfig\BasicConfigRepository;
 use App\Domain\Blog\BlogRepository;
 use App\Domain\ContactInfo\ContactInfoRepository;
@@ -12,6 +13,7 @@ use App\Domain\Photo\PhotoRepository;
 use App\Domain\Project\ProjectRepository;
 use App\Domain\SiteConfig\SiteConfigRepository;
 use App\Domain\User\UserRepository;
+use App\Infrastructure\Persistence\Address\AddressReaderRepository;
 use App\Infrastructure\Persistence\BasicConfig\BasicConfigReaderRepository;
 use App\Infrastructure\Persistence\Blog\BlogReaderRepository;
 use App\Infrastructure\Persistence\ContactInfo\ContactInfoReaderRepository;
@@ -40,5 +42,6 @@ return function (ContainerBuilder $containerBuilder) {
         BlogRepository::class => \DI\autowire(BlogReaderRepository::class),
         BasicConfigRepository::class => \DI\autowire(BasicConfigReaderRepository::class),
         ProjectRepository::class => \DI\autowire(ProjectReaderRepository::class),
+        AddressRepository::class => \DI\autowire(AddressReaderRepository::class),
     ]);
 };

@@ -2,11 +2,13 @@
 
 namespace App\Infrastructure\Persistence\Project;
 
+use App\Domain\Address\Address;
 use App\Domain\Project\Project;
 use App\Domain\Project\ProjectNotFoundException;
 use App\Domain\Project\ProjectRepository;
 use DomainException;
 use Selective\Database\Connection;
+use Selective\Database\SelectQuery;
 
 final class ProjectReaderRepository implements ProjectRepository
 {
@@ -26,11 +28,32 @@ final class ProjectReaderRepository implements ProjectRepository
         $this->connection = $connection;
     }
 
+    private function makeSingleQuery(): SelectQuery
+    {
+        $selectQuery = $this->connection->select();
+        $selectQuery->from('projects');
+        $selectQuery->leftJoin("address", "projects.addressId", "=", "address.id");
+        $selectQuery->columns([
+            'projects.id',
+            'projects.title',
+            'projects.addressId',
+            'projects.startDate',
+            'projects.endDate',
+            'projects.imageKitGalleryName',
+            'address.addressOne',
+            'address.addressTwo',
+            'address.city',
+            'address.state',
+            'address.zipCode',
+            'address.country'
+        ]);
+
+        return $selectQuery;
+    }
+
     public function findAll(): array
     {
-        $query = $this->connection->select()->from($this->tableName);
-        $query->columns($this->columns);
-
+        $query = $this->makeSingleQuery();
         $rows = $query->execute()->fetchAll() ?: [];
 
         if (!is_array($rows)) {
@@ -48,10 +71,7 @@ final class ProjectReaderRepository implements ProjectRepository
 
     public function findById($id): Project
     {
-        $query = $this->connection->select()->from($this->tableName);
-        $query->columns($this->columns);
-        $query->where('route', '=', $id);
-
+        $query = $this->makeSingleQuery()->where('projects.id', '=', $id);
         $row = $query->execute()->fetch() ?: [];
 
         if (!$row) {
@@ -66,7 +86,6 @@ final class ProjectReaderRepository implements ProjectRepository
      */
     public function create($d): Project
     {
-        $d['id'] = null;
         $query = $this->connection->insert()->into($this->tableName)->set($d);
         $row = $query->execute();
 
@@ -107,6 +126,17 @@ final class ProjectReaderRepository implements ProjectRepository
 
     private function makeData($row): Project
     {
-        return new Project($row['id'], $row['title'], $row['addressId'], $row['startDate'], $row['endDate'], $row['imageKitGalleryName']);
+        $address = NULL;
+        if(!empty($row['addressId'])) $address = new Address($row['addressId'], $row['addressOne'], $row['addressTwo'], $row['city'], $row['state'], $row['zipCode'], $row['country']);
+
+        return new Project(
+            $row['id'], 
+            $row['title'], 
+            $row['addressId'], 
+            $row['startDate'], 
+            $row['endDate'], 
+            $row['imageKitGalleryName'],
+            $address
+        );
     }
 }

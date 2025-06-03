@@ -14,7 +14,29 @@ class CreateProjectAction extends ProjectAction
     protected function action(): Response
     {
         $data = $this->request->getParsedBody();
-        $data = $this->projectRepository->create($data);
+
+        $addressId = NULL;
+        if(!empty($data['address']))
+        {
+            $address = array(
+                'addressOne' => $data['address']['addressOne'], 
+                'addressTwo' => $data['address']['addressTwo'], 
+                'city' => $data['address']['city'], 
+                'state' => $data['address']['state'], 
+                'zipCode' => $data['address']['zipCode'], 
+                'country' => $data['address']['country']
+            );
+            $address = $this->addressRepository->create($address);
+            $addressId = $address->getId();
+        }
+        $project = array(
+            'title' => $data['title'], 
+            'addressId' => $addressId, 
+            'startDate' => $data['startDate'], 
+            'endDate' => $data['endDate'], 
+            'imageKitGalleryName' => $data['imageKitGalleryName']
+        );
+        $data = $this->projectRepository->create($project);
         $this->logger->info("Project created");
 
         return $this->respondWithData($data);

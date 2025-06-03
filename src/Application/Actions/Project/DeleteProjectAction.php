@@ -14,6 +14,13 @@ class DeleteProjectAction extends ProjectAction
     protected function action(): Response
     {
         $id = (int) $this->resolveArg('id');
+        $project = $this->projectRepository->findById($id);
+
+        if(!empty($project->getAddressid()))
+        {
+            $this->addressRepository->deleteById($project->getAddressid());
+        }
+
         $data = $this->projectRepository->deleteById($id);
         $this->logger->info("Project deleted");
 
