@@ -161,4 +161,5 @@ return function (App $app) {
     $app->get('/blog_list', ListBlogAction::class);
     $app->get('/blog_list/:id', ViewBlogAction::class);
     $app->get('/basic_config/by/{key}', ViewByKeyBasicConfigAction::class);
+    $app->post('/query', CreateContactInfoAction::class);
 };

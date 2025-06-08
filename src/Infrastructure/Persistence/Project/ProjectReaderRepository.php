@@ -9,10 +9,12 @@ use App\Domain\Project\ProjectRepository;
 use DomainException;
 use Selective\Database\Connection;
 use Selective\Database\SelectQuery;
+use ImageKit\ImageKit;
 
 final class ProjectReaderRepository implements ProjectRepository
 {
     private Connection $connection;
+    private ImageKit $imageKit;
     private $tableName = "projects";
     private $columns = [
         'id',
@@ -23,9 +25,10 @@ final class ProjectReaderRepository implements ProjectRepository
         'imageKitGalleryName',
     ];
 
-    public function __construct(Connection $connection)
+    public function __construct(Connection $connection, ImageKit $imageKit)
     {
         $this->connection = $connection;
+        $this->imageKit = $imageKit;
     }
 
     private function makeSingleQuery(): SelectQuery
@@ -89,6 +92,11 @@ final class ProjectReaderRepository implements ProjectRepository
         $query = $this->connection->insert()->into($this->tableName)->set($d);
         $row = $query->execute();
 
+        $this->imageKit->createFolder([
+            'folderName' => 'firstProject',
+            'parentFolderPath' => 'projects'
+        ]);
+
         if (!$row) {
             throw new DomainException(sprintf('Project not found'));
         }
@@ -104,6 +112,11 @@ final class ProjectReaderRepository implements ProjectRepository
         $id = $d['id'];
         $query = $this->connection->update()->table($this->tableName)->set($d)->where("id", "=", $d['id']);
         $row = $query->execute();
+
+        $this->imageKit->createFolder([
+            'folderName' => "firstProject",
+            'parentFolderPath' => "/projects/"
+        ]);
 
         if (!$row) {
             throw new DomainException(sprintf('Project not found: %s', $id));
