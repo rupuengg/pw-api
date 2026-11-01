@@ -27,7 +27,7 @@
     "firebase/php-jwt": "^5.5",
     "imagekit/imagekit": "^4.0",
     "monolog/monolog": "^2.8",
-    "php-di/php-di": "^6.4",
+    "php-di/php-di": "^7.1",
     "phpmailer/phpmailer": "^6.10",
     "selective/basepath": "^2.1",
     "selective/database": "^3.2",
