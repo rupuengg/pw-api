@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "014ec0d7f1a157587f76dc658094b9d2",
+    "content-hash": "6ee6fa4aedbe8ae1d65f3740e2348a12",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1441,27 +1441,26 @@
         },
         {
             "name": "selective/basepath",
-            "version": "2.1.0",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/selective-php/basepath.git",
-                "reference": "63961fbfcaf492bd0ae8e40653f6c3c750c2f8ad"
+                "reference": "6c06d274e97a583d16353636ccbf566fd3737ce1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/selective-php/basepath/zipball/63961fbfcaf492bd0ae8e40653f6c3c750c2f8ad",
-                "reference": "63961fbfcaf492bd0ae8e40653f6c3c750c2f8ad",
+                "url": "https://api.github.com/repos/selective-php/basepath/zipball/6c06d274e97a583d16353636ccbf566fd3737ce1",
+                "reference": "6c06d274e97a583d16353636ccbf566fd3737ce1",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2 || ^8.0",
+                "php": "8.1.* || 8.2.* || 8.3.* || 8.4.* || 8.5.*",
                 "psr/http-server-middleware": "^1"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2",
-                "overtrue/phplint": "^2",
-                "phpstan/phpstan": "0.*",
-                "phpunit/phpunit": "^8 || ^9",
+                "friendsofphp/php-cs-fixer": "^3",
+                "phpstan/phpstan": "^1 || ^2",
+                "phpunit/phpunit": "^10",
                 "slim/psr7": "^1",
                 "slim/slim": "^4",
                 "squizlabs/php_codesniffer": "^3"
@@ -1485,9 +1484,9 @@
             ],
             "support": {
                 "issues": "https://github.com/selective-php/basepath/issues",
-                "source": "https://github.com/selective-php/basepath/tree/2.1.0"
+                "source": "https://github.com/selective-php/basepath/tree/2.4.0"
             },
-            "time": "2021-07-17T10:03:02+00:00"
+            "time": "2026-02-05T20:45:33+00:00"
         },
         {
             "name": "selective/database",
@@ -4548,5 +4547,5 @@
         "ext-json": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
